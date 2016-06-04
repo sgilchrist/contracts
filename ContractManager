@@ -1,0 +1,45 @@
+contract TestContract{
+    address public creator;
+    bytes32 public supplier;
+    bytes32 public customer;
+    uint public term;
+    
+    
+    /*
+    function TestContract(bytes32 supplier_, bytes32 customer_, uint term_){
+        creator = msg.sender;
+        supplier = supplier_;
+        customer = customer_;
+        term = term_;
+    }
+    */
+    
+    function TestContract(uint term_) {
+        creator = msg.sender;
+        if (term_ < 1) {
+           term = 1; 
+        } else {
+            term = term_;
+        }
+        
+    }
+}
+
+contract ContractManager {
+    mapping(uint => TestContract) contracts;
+    uint numberOfContracts = 0;
+    
+    function createContract(uint term) {
+        numberOfContracts++;
+        contracts[numberOfContracts] = new TestContract(term);
+    }
+    
+    function getContractTerm(uint x) returns (uint){
+        return contracts[x].term();
+    }
+    
+    function getNumberOfContract() returns (uint) {
+        return numberOfContracts;
+    }
+    
+}
